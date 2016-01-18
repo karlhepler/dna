@@ -2,6 +2,6 @@
 
 namespace NonAppable\Webster;
 
-class Book
+class Words
 {
 }
