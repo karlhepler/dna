@@ -9,8 +9,7 @@ interface HttpConnection
 	 * and return XML
 	 *
 	 * @param  string $uri
-	 * @param  array  $options
 	 * @return \SimpleXMLElement
 	 */
-	public function get($uri, array $options = []);
+	public function get($uri);
 }
