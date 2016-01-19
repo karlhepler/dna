@@ -22,8 +22,8 @@ class WebsterTest extends TestCase
 
     public function testWebsterWorking()
     {
-        $this->webster->setDictionary($this->elementary);
+        $this->webster->setDictionary($this->intermediate);
 
-        dd( $this->webster->search('apple')->words() );
+        dd( $this->webster->search('sonic')->words() );
     }
 }

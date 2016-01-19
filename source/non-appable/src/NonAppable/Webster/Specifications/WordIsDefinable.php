@@ -1,6 +1,6 @@
 <?php
 
-namespace NonAppable\Webster\Helpers;
+namespace NonAppable\Webster\Specifications;
 
 use NonAppable\Webster\Word;
 use NonAppable\Webster\Contracts\WordSpecification;
@@ -34,7 +34,8 @@ class WordIsDefinable implements WordSpecification
 			&& $this->isNotADifference()
 			&& $this->isNotAPreDeterminer()
 			&& $this->isNotAPreposition()
-			&& $this->isNotAConjunction();
+			&& $this->isNotAConjunction()
+			&& $this->isNotAWordWeDontWant();
 	}
 
 	/**
@@ -142,6 +143,17 @@ class WordIsDefinable implements WordSpecification
 	protected function isNotAConjunction()
 	{
 		return $this->doesNotMatch('for|and|nor|but|or|yet|so|after|although|as|because|before|once|since|though|unless|until|when|where|while');
+	}
+
+	/**
+	 * Determine if the word
+	 * is NOT a word we don't want
+	 * 
+	 * @return boolean
+	 */
+	protected function isNotAWordWeDontWant()
+	{
+		return $this->doesNotMatch('is');
 	}
 
 	/**

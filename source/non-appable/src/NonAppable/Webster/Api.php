@@ -13,8 +13,12 @@ class Api
 	protected $dictionary;
     protected $specification;
 
-    public function __construct(HttpConnection $http, $uri, WordSpecification $specification = null, Dictionary $dictionary = null)
-    {
+    public function __construct(
+        HttpConnection $http,
+        $uri,
+        WordSpecification $specification = null,
+        Dictionary $dictionary = null
+    ) {
 		$this->http = $http;
 		$this->uri = $uri;
         $this->specification = $specification;
@@ -65,8 +69,14 @@ class Api
         // Instantiate words
         $words = new Words([], $this->specification);
 
+        // Get the xml response.
+        $xml = $this->http->get($this->uri($query));
+
+        // If there is no xml, just return
+        if ( is_null($xml) ) return $words;
+
         // Add words from the http response
-        $this->eachDefinitionWord($this->http->get($this->uri($query)),
+        $this->eachDefinitionWord($xml,
             function($word, $index) use (&$words) {
                 $words->add($word, $index);
             }

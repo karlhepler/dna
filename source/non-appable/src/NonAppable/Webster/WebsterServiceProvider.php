@@ -4,8 +4,8 @@ namespace NonAppable\Webster;
 
 use NonAppable\Webster\Api;
 use Illuminate\Support\ServiceProvider;
-use NonAppable\Webster\Helpers\WordIsDefinable;
 use NonAppable\Webster\SimpleXMLHttpConnection;
+use NonAppable\Webster\Specifications\WordIsDefinable;
 use NonAppable\Webster\References\ElementaryDictionary;
 use NonAppable\Webster\References\IntermediateDictionary;
 

@@ -14,13 +14,23 @@ class Word
 	}
 
 	/**
-	 * Convert the Word to a string
+	 * Get parent words
 	 * 
-	 * @return string
+	 * @return Words
 	 */
-	public function __toString()
+	public function parents()
 	{
-		return $this->word;
+		
+	}
+
+	/**
+	 * Get child words
+	 * 
+	 * @return Words
+	 */
+	public function children()
+	{
+		
 	}
 
 	/**
@@ -31,5 +41,25 @@ class Word
 	public function rank()
 	{
 		return $this->rank;
+	}
+
+	/**
+	 * Get the word
+	 * 
+	 * @return string
+	 */
+	public function word()
+	{
+		return $this->word;
+	}
+
+	/**
+	 * Convert the Word to a string
+	 * 
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->word();
 	}
 }
