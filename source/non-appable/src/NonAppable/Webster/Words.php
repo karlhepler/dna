@@ -21,7 +21,7 @@ class Words
 	 * @param array|string $word
 	 * @param integer $rank
 	 */
-	public function add($word, $rank = 1)
+	public function add($word, $rank = 0)
 	{
 		// Return if word is empty
 		if ( empty($word) ) return;

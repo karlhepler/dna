@@ -68,8 +68,7 @@ class Api
         // Add words from the http response
         $this->eachDefinitionWord($this->http->get($this->uri($query)),
             function($word, $index) use (&$words) {
-                $rank = $index + 1;
-                $words->add($word, $rank);
+                $words->add($word, $index);
             }
         );
 
