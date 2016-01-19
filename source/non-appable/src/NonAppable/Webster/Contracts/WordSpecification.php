@@ -10,17 +10,17 @@ interface WordSpecification
 	 * Determine if the word specification
 	 * is satisfied by the given word
 	 * 
-	 * @param  Word    $word
+	 * @param  string  $word
 	 * @return boolean
 	 */
-	public function isSatisfiedBy(Word $word);
+	public function isSatisfiedBy($word);
 
 	/**
 	 * Determine if the word specification
 	 * is NOT satisfied by the given word
 	 * 
-	 * @param  Word    $word
+	 * @param  string  $word
 	 * @return boolean
 	 */
-	public function isNotSatisfiedBy(Word $word);
+	public function isNotSatisfiedBy($word);
 }

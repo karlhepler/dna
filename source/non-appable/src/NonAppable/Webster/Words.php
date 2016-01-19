@@ -2,6 +2,8 @@
 
 namespace NonAppable\Webster;
 
+use NonAppable\Webster\Contracts\WordSpecification;
+
 class Words
 {
 	protected $specification;
@@ -19,23 +21,20 @@ class Words
 	 * @param array|string $word
 	 * @param integer $rank
 	 */
-	public function add($word, $rank = 0)
+	public function add($word, $rank = 1)
 	{
-		// If word is an array, recurse
-		if ( is_array($word) ) {
-			foreach ($word as $w) {
-				$this->add($w, $rank);
-			}
+		// Return if word is empty
+		if ( empty($word) ) return;
+
+		// Add the word if it's not an array
+		if ( !is_array($word) ) {
+			return $this->addWord($word, $rank);
 		}
 
-		// Return if it already exists
-		if ( $this->exists($word) ) return;
-
-		// Return early if word is not satisfied by the spec
-		if ( $this->doesNotSatisfySpec($word) ) return;
-
-		// Add it!
-		$this->words[] = new Word($word, $rank);
+		// The word is an array, so recurse
+		foreach ($word as $w) {
+			$this->add($w, $rank);
+		}
 	}
 
 	/**
@@ -70,5 +69,23 @@ class Words
 	{
 		return $this->specification
 			&& $this->specification->isNotSatisfiedBy($word);
+	}
+
+	/**
+	 * Add the word to the words array
+	 * 
+	 * @param string $word
+	 * @param integer $rank
+	 */
+	protected function addWord($word, $rank)
+	{
+		// Return if it already exists
+		if ( $this->exists($word) ) return;
+
+		// Return early if word is not satisfied by the spec
+		if ( $this->doesNotSatisfySpec($word) ) return;
+
+		// Add it!
+		$this->words[] = new Word($word, $rank);
 	}
 }

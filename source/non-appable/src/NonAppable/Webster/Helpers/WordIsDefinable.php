@@ -16,11 +16,12 @@ class WordIsDefinable implements WordSpecification
 	 * Sources:
 	 * http://www.edufind.com/english-grammar/english-grammar-guide/
 	 * https://www.englishclub.com/grammar/prepositions-list.htm
+	 * http://grammar.yourdictionary.com/parts-of-speech/conjunctions/conjunctions.html
 	 * 
-	 * @param  Word    $word
+	 * @param  string  $word
 	 * @return boolean
 	 */
-	public function isSatisfiedBy(Word $word)
+	public function isSatisfiedBy($word)
 	{
 		$this->word = $word;
 
@@ -32,17 +33,18 @@ class WordIsDefinable implements WordSpecification
 			&& $this->isNotADistributive()
 			&& $this->isNotADifference()
 			&& $this->isNotAPreDeterminer()
-			&& $this->isNotAPreposition();
+			&& $this->isNotAPreposition()
+			&& $this->isNotAConjunction();
 	}
 
 	/**
 	 * Determine if the word specification
 	 * is NOT satisfied by the given word
 	 * 
-	 * @param  Word    $word
+	 * @param  string  $word
 	 * @return boolean
 	 */
-	public function isNotSatisfiedBy(Word $word)
+	public function isNotSatisfiedBy($word)
 	{
 		return !$this->isSatisfiedBy($word);
 	}
@@ -133,6 +135,16 @@ class WordIsDefinable implements WordSpecification
 	}
 
 	/**
+	 * Determine if the word is NOT a conjunction
+	 * 
+	 * @return boolean
+	 */
+	protected function isNotAConjunction()
+	{
+		return $this->doesNotMatch('for|and|nor|but|or|yet|so|after|although|as|because|before|once|since|though|unless|until|when|where|while');
+	}
+
+	/**
 	 * Determines if the word does NOT match
 	 * the given matches
 	 * 
@@ -141,6 +153,6 @@ class WordIsDefinable implements WordSpecification
 	 */
 	protected function doesNotMatch($matches)
 	{
-		return preg_match($matches, $this->word) !== 1;
+		return preg_match("/\b($matches)\b/", $this->word) !== 1;
 	}
 }
