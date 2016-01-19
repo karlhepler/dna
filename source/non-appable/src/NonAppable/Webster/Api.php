@@ -4,17 +4,20 @@ namespace NonAppable\Webster;
 
 use NonAppable\Webster\Contracts\Dictionary;
 use NonAppable\Webster\Contracts\HttpConnection;
+use NonAppable\Webster\Contracts\WordSpecification;
 use NonAppable\Webster\Exceptions\DictionaryException;
 
 class Api
 {
 	protected $http;
 	protected $dictionary;
+    protected $specification;
 
-    public function __construct(HttpConnection $http, $uri, Dictionary $dictionary = null)
+    public function __construct(HttpConnection $http, $uri, WordSpecification $specification = null, Dictionary $dictionary = null)
     {
 		$this->http = $http;
 		$this->uri = $uri;
+        $this->specification = $specification;
         $this->setDictionary($dictionary);
     }
 
@@ -26,6 +29,16 @@ class Api
     public function setDictionary($dictionary)
     {
     	$this->dictionary = $dictionary;
+    }
+
+    /**
+     * Set the word specification
+     * 
+     * @param WordSpecification $specification
+     */
+    public function setWordSpecification(WordSpecification $specification)
+    {
+        $this->specification = $specification;
     }
 
     /**
@@ -50,12 +63,12 @@ class Api
         $this->enforceDictionary();
 
         // Instantiate words
-        $words = new Words;
+        $words = new Words([], $this->specification);
 
         // Add words from the http response
         $this->eachDefinitionWord($this->http->get($this->uri($query)),
-            function($word) use (&$words) {
-                $words->add($word);
+            function($word, $index) use (&$words) {
+                $words->add($word, $index);
             }
         );
 
@@ -93,11 +106,12 @@ class Api
      * Get the definitions from xml
      * 
      * @param  \SimpleXMLElement $xml
+     * @param  \Closure $callback
      */
     protected function eachDefinitionWord(\SimpleXMLElement $xml, \Closure $callback)
     {
-        foreach ($this->definitions($xml) as $definition) {
-            $callback($this->words((string)$definition));
+        foreach ($this->definitions($xml) as $key => $definition) {
+            $callback($this->words((string)$definition), $key);
         }
     }
 
@@ -120,6 +134,6 @@ class Api
      */
     protected function words($string)
     {
-        return explode(' ', ltrim($string, ':'));
+        return preg_split('/\s+/', ltrim($string, ':'));
     }
 }

@@ -50,8 +50,8 @@ class ApiSpec extends ObjectBehavior
 
     function it_can_search_for_a_word_in_intermediate_dictionary_and_return_words(HttpConnection $http, IntermediateDictionary $intermediate)
     {
-        $elementary->code()->willReturn('sd3');
-        $elementary->key()->willReturn('5f83bec4-c45c-4b25-808e-70c0aaddbe87');
+        $intermediate->code()->willReturn('sd3');
+        $intermediate->key()->willReturn('5f83bec4-c45c-4b25-808e-70c0aaddbe87');
 
         $http->get('http://www.dictionaryapi.com/api/v1/references/sd3/xml/Test?key=5f83bec4-c45c-4b25-808e-70c0aaddbe87')
              ->shouldBeCalled();
