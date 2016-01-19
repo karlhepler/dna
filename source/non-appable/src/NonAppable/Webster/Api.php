@@ -18,15 +18,15 @@ class Api
 		$this->http = $http;
 		$this->uri = $uri;
         $this->specification = $specification;
-        $this->setDictionary($dictionary);
+        $this->dictionary = $dictionary;
     }
 
     /**
      * Set the dictionary
      * 
-     * @param Dictionary|null $dictionary
+     * @param Dictionary $dictionary
      */
-    public function setDictionary($dictionary)
+    public function setDictionary(Dictionary $dictionary)
     {
     	$this->dictionary = $dictionary;
     }
