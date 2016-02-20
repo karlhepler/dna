@@ -9,6 +9,12 @@ class Words
 	protected $specification;
 	protected $words = [];
 
+	/**
+	 * Words collection
+	 *
+	 * @param array $words
+	 * @param WordSpecification $specification
+	 */
 	public function __construct(array $words = [], WordSpecification $specification = null)
 	{
 		$this->specification = $specification;
@@ -65,7 +71,7 @@ class Words
 	 * @param  string $word
 	 * @return boolean
 	 */
-	protected function doesNotSatisfySpec($word)
+	protected function indefinable($word)
 	{
 		return $this->specification
 			&& $this->specification->isNotSatisfiedBy($word);
@@ -83,7 +89,7 @@ class Words
 		if ( $this->exists($word) ) return;
 
 		// Return early if word is not satisfied by the spec
-		if ( $this->doesNotSatisfySpec($word) ) return;
+		if ( $this->indefinable($word) ) return;
 
 		// Add it!
 		$this->words[] = new Word($word, $rank);

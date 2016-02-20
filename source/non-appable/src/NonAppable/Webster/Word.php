@@ -7,6 +7,12 @@ class Word
 	protected $word;
 	protected $rank;
 
+	/**
+	 * Word
+	 *
+	 * @param mixed $word
+	 * @param int $rank
+	 */
 	public function __construct($word, $rank = 0)
 	{
 		$this->word = strtolower($word);

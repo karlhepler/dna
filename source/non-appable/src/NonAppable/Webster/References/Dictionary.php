@@ -12,7 +12,7 @@ abstract class Dictionary implements DictionaryContract
 	public function __construct($code, $key)
 	{
 		$this->code = $code;
-		$this->key = $key;
+		$this->key  = $key;
 	}
 
 	/**

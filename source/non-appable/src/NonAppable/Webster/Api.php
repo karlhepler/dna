@@ -13,16 +13,24 @@ class Api
 	protected $dictionary;
     protected $specification;
 
+    /**
+     * Webster API Handler
+     *
+     * @param HttpConnection $http
+     * @param mixed $uri
+     * @param WordSpecification $specification
+     * @param Dictionary $dictionary
+     */
     public function __construct(
         HttpConnection $http,
         $uri,
         WordSpecification $specification = null,
         Dictionary $dictionary = null
     ) {
-		$this->http = $http;
-		$this->uri = $uri;
+		$this->http          = $http;
+		$this->uri           = $uri;
         $this->specification = $specification;
-        $this->dictionary = $dictionary;
+        $this->dictionary    = $dictionary;
     }
 
     /**
