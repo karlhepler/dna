@@ -10,8 +10,9 @@ use NonAppable\Webster\Exceptions\DictionaryException;
 
 class Api
 {
+	const BASE_URI = 'http://www.dictionaryapi.com/api/v1/references';
+
 	protected $http;
-	protected $uri;
 	protected $wordsFactory;
 	protected $dictionary;
 
@@ -24,12 +25,10 @@ class Api
      */
     public function __construct(
         HttpConnection $http,
-        $uri,
 		WordsFactory $wordsFactory,
         Dictionary $dictionary = null
     ) {
 		$this->http         = $http;
-		$this->uri          = $uri;
 		$this->wordsFactory = $wordsFactory;
         $this->dictionary   = $dictionary;
     }
@@ -105,7 +104,7 @@ class Api
      */
     protected function uri($query)
     {
-        return rtrim($this->uri, '/')
+        return static::BASE_URI
                . '/' . $this->dictionary->code()
                . '/xml/' . $query
                . '?key=' . $this->dictionary->key();

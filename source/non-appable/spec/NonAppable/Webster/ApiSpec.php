@@ -19,7 +19,7 @@ class ApiSpec extends ObjectBehavior
 	{
 		$wordsFactory->create()->willReturn($words);
 
-		$this->beConstructedWith($http, 'http://www.dictionaryapi.com/api/v1/references/', $wordsFactory);
+		$this->beConstructedWith($http, $wordsFactory);
 	}
 
     function it_is_initializable()

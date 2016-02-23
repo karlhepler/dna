@@ -1,9 +1,6 @@
 <?php
 
 return [
-	
-	// Base URI
-	'uri' => 'http://www.dictionaryapi.com/api/v1/references',
 
 	// DICTIONARIES
 	'dictionaries' => [
@@ -17,7 +14,7 @@ return [
 			'code' => 'sd3',
 			'key' => '5f83bec4-c45c-4b25-808e-70c0aaddbe87'
 		]
-		
+
 	]
 
 ];

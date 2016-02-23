@@ -4,6 +4,7 @@ namespace NonAppable\Webster;
 
 use NonAppable\Webster\Api;
 use Illuminate\Support\ServiceProvider;
+use NonAppable\Webster\Factories\WordsFactory;
 use NonAppable\Webster\SimpleXMLHttpConnection;
 use NonAppable\Webster\Specifications\WordIsDefinable;
 use NonAppable\Webster\References\ElementaryDictionary;
@@ -18,29 +19,50 @@ class WebsterServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Register the elementary dictionary
-        $this->app->singleton(ElementaryDictionary::class, function($app) {
-            return new ElementaryDictionary(
-                $app['config']['webster']['dictionaries']['elementary']['code'],
-                $app['config']['webster']['dictionaries']['elementary']['key']
-            );
-        });
-
-        // Register the intermediate dictionary
-        $this->app->singleton(IntermediateDictionary::class, function($app) {
-            return new IntermediateDictionary(
-                $app['config']['webster']['dictionaries']['intermediate']['code'],
-                $app['config']['webster']['dictionaries']['intermediate']['key']
-            );
-        });
-
-        // Register the api
-        $this->app->singleton(Api::class, function($app) {
-        	return new Api(
-        		new SimpleXMLHttpConnection,
-        		$app['config']['webster']['uri'],
-                new WordIsDefinable
-        	);
-        });
+		$this->registerElementaryDictionary();
+		$this->registerIntermediateDictionary();
+		$this->registerWebsterApi();
     }
+
+	/**
+	 * Register the elementary dictionary
+	 */
+	protected function registerElementaryDictionary()
+	{
+		$this->app->singleton(ElementaryDictionary::class, function($app) {
+			return new ElementaryDictionary(
+				$app['config']['webster']['dictionaries']['elementary']['code'],
+				$app['config']['webster']['dictionaries']['elementary']['key']
+			);
+		});
+	}
+
+	/**
+	 * Register the intermediate dictionary
+	 */
+	protected function registerIntermediateDictionary()
+	{
+		$this->app->singleton(IntermediateDictionary::class, function($app) {
+			return new IntermediateDictionary(
+				$app['config']['webster']['dictionaries']['intermediate']['code'],
+				$app['config']['webster']['dictionaries']['intermediate']['key']
+			);
+		});
+	}
+
+	/**
+	 * Register the Webster API
+	 */
+	protected function registerWebsterApi()
+	{
+		$this->app->singleton(Api::class, function($app) {
+			return new Api(
+				new SimpleXMLHttpConnection,
+				new WordsFactory(
+					$app['events'],
+					new WordIsDefinable
+				)
+			);
+		});
+	}
 }
