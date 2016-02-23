@@ -107,7 +107,7 @@ class Api
         return static::BASE_URI
                . '/' . $this->dictionary->code()
                . '/xml/' . $query
-               . '?key=' . $this->dictionary->key();
+               . '?key=' . $this->dictionary()->key();
     }
 
     /**

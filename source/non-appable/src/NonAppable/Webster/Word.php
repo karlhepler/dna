@@ -15,7 +15,7 @@ class Word
 	 */
 	public function __construct($word, $rank = 0)
 	{
-		$this->word = strtolower($word);
+		$this->word = $this->normalize($word);
 		$this->rank = $rank;
 	}
 
@@ -60,12 +60,26 @@ class Word
 	}
 
 	/**
-	 * Convert the Word to a string
+	 * Convert this word to an array
 	 *
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return [
+			'word' => $this->word(),
+			'rank' => $this->rank()
+		];
+	}
+
+	/**
+	 * Normalize the given string
+	 *
+	 * @param mixed $string
 	 * @return string
 	 */
-	public function __toString()
+	protected function normalize($string)
 	{
-		return $this->word();
+		return strtolower(preg_replace('/[^A-Za-z]/s', '', $string));
 	}
 }

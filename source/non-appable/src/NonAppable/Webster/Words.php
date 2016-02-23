@@ -103,4 +103,18 @@ class Words
 			$this->words[] = new Word($word, $rank)
 		);
 	}
+
+	/**
+	 * Convert the words to a deep array
+	 *
+	 * @return array
+	 */
+	public function toArray()
+	{
+		$words = [];
+		foreach ( $this->words() as $word ) {
+			$words[] = $word->toArray();
+		}
+		return $words;
+	}
 }

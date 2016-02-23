@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use NonAppable\Webster\Factories\WordsFactory;
 use NonAppable\Webster\SimpleXMLHttpConnection;
 use NonAppable\Webster\Specifications\WordIsDefinable;
+use NonAppable\Webster\Adapters\LaravelEventDispatcher;
 use NonAppable\Webster\References\ElementaryDictionary;
 use NonAppable\Webster\References\IntermediateDictionary;
 
@@ -59,7 +60,7 @@ class WebsterServiceProvider extends ServiceProvider
 			return new Api(
 				new SimpleXMLHttpConnection,
 				new WordsFactory(
-					$app['events'],
+					new LaravelEventDispatcher($app['events']),
 					new WordIsDefinable
 				)
 			);
