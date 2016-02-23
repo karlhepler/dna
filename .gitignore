@@ -1,5 +1,6 @@
-*.sw*
+*.s*
 node_modules
 bower_components
 source/public/css/**/*.css
 source/public/scripts/**/*.js
+/tags

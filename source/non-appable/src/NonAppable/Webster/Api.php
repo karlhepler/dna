@@ -3,6 +3,7 @@
 namespace NonAppable\Webster;
 
 use NonAppable\Webster\Contracts\Dictionary;
+use NonAppable\Webster\Factories\WordsFactory;
 use NonAppable\Webster\Contracts\HttpConnection;
 use NonAppable\Webster\Contracts\WordSpecification;
 use NonAppable\Webster\Exceptions\DictionaryException;
@@ -10,32 +11,32 @@ use NonAppable\Webster\Exceptions\DictionaryException;
 class Api
 {
 	protected $http;
+	protected $uri;
+	protected $wordsFactory;
 	protected $dictionary;
-    protected $specification;
 
     /**
      * Webster API Handler
      *
      * @param HttpConnection $http
      * @param mixed $uri
-     * @param WordSpecification $specification
      * @param Dictionary $dictionary
      */
     public function __construct(
         HttpConnection $http,
         $uri,
-        WordSpecification $specification = null,
+		WordsFactory $wordsFactory,
         Dictionary $dictionary = null
     ) {
-		$this->http          = $http;
-		$this->uri           = $uri;
-        $this->specification = $specification;
-        $this->dictionary    = $dictionary;
+		$this->http         = $http;
+		$this->uri          = $uri;
+		$this->wordsFactory = $wordsFactory;
+        $this->dictionary   = $dictionary;
     }
 
     /**
      * Set the dictionary
-     * 
+     *
      * @param Dictionary $dictionary
      */
     public function setDictionary(Dictionary $dictionary)
@@ -44,18 +45,8 @@ class Api
     }
 
     /**
-     * Set the word specification
-     * 
-     * @param WordSpecification $specification
-     */
-    public function setWordSpecification(WordSpecification $specification)
-    {
-        $this->specification = $specification;
-    }
-
-    /**
      * Get the current dictionary
-     * 
+     *
      * @return Dictionary|null
      */
     public function dictionary()
@@ -65,7 +56,7 @@ class Api
 
     /**
      * Search the api and return found words
-     * 
+     *
      * @param  string $query
      * @return Words
      */
@@ -75,7 +66,7 @@ class Api
         $this->enforceDictionary();
 
         // Instantiate words
-        $words = new Words([], $this->specification);
+        $words = $this->wordsFactory->create();
 
         // Get the xml response.
         $xml = $this->http->get($this->uri($query));
@@ -108,7 +99,7 @@ class Api
 
     /**
      * Return the full uri
-     * 
+     *
      * @param  string $query
      * @return string
      */
@@ -122,20 +113,20 @@ class Api
 
     /**
      * Get the definitions from xml
-     * 
+     *
      * @param  \SimpleXMLElement $xml
      * @param  \Closure $callback
      */
     protected function eachDefinitionWord(\SimpleXMLElement $xml, \Closure $callback)
     {
         foreach ($this->definitions($xml) as $key => $definition) {
-            $callback($this->words((string)$definition), $key);
+            $callback($this->parseWords((string)$definition), $key);
         }
     }
 
     /**
      * Get the definitions from xml
-     * 
+     *
      * @param  \SimpleXMLElement $xml
      * @return array
      */
@@ -146,11 +137,11 @@ class Api
 
     /**
      * Parse the words from a string
-     * 
+     *
      * @param  string $string
      * @return array
      */
-    protected function words($string)
+    protected function parseWords($string)
     {
         return preg_split('/[\s,:]+/', $string);
     }

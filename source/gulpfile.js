@@ -33,9 +33,7 @@ gulp.task('sass', function compileSASS() {
 	return gulp.src(src.sass)
 			   .pipe(sourcemaps.init())
 			   .pipe(sass(options.sass).on('error', sass.logError))
-			   .pipe(postcss([
-					lost(),
-			   ]))
+			   .pipe(postcss([lost()]))
 			   .pipe(autoprefixer(options.autoprefixer))
 			   .pipe(sourcemaps.write())
 			   .pipe(gulp.dest('public/css'))

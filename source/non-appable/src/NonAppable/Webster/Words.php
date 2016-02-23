@@ -2,28 +2,35 @@
 
 namespace NonAppable\Webster;
 
+use NonAppable\Webster\Contracts\EventDispatcher;
 use NonAppable\Webster\Contracts\WordSpecification;
 
 class Words
 {
 	protected $specification;
 	protected $words = [];
+	protected $event;
 
 	/**
 	 * Words collection
 	 *
 	 * @param array $words
 	 * @param WordSpecification $specification
+	 * @param EventDispatcher $event
 	 */
-	public function __construct(array $words = [], WordSpecification $specification = null)
-	{
+	public function __construct(
+		array $words = [],
+		WordSpecification $specification,
+		EventDispatcher $event
+	) {
 		$this->specification = $specification;
 		$this->add($words);
+		$this->event = $event;
 	}
 
 	/**
 	 * Add a word
-	 * 
+	 *
 	 * @param array|string $word
 	 * @param integer $rank
 	 */
@@ -45,7 +52,7 @@ class Words
 
 	/**
 	 * Get all of the words
-	 * 
+	 *
 	 * @return array
 	 */
 	public function words()
@@ -67,19 +74,18 @@ class Words
 
 	/**
 	 * Determine if the word does NOT satisfiy the spec
-	 * 
+	 *
 	 * @param  string $word
 	 * @return boolean
 	 */
 	protected function indefinable($word)
 	{
-		return $this->specification
-			&& $this->specification->isNotSatisfiedBy($word);
+		return $this->specification->isNotSatisfiedBy($word);
 	}
 
 	/**
 	 * Add the word to the words array
-	 * 
+	 *
 	 * @param string $word
 	 * @param integer $rank
 	 */
@@ -91,7 +97,10 @@ class Words
 		// Return early if word is not satisfied by the spec
 		if ( $this->indefinable($word) ) return;
 
-		// Add it!
-		$this->words[] = new Word($word, $rank);
+		// Add the word and fire an event
+		$this->event->fire(
+			'webster.word.added',
+			$this->words[] = new Word($word, $rank)
+		);
 	}
 }

@@ -7,6 +7,7 @@ use NonAppable\Webster\Api;
 use PhpSpec\ObjectBehavior;
 use NonAppable\Webster\Words;
 use NonAppable\Webster\Contracts\Dictionary;
+use NonAppable\Webster\Factories\WordsFactory;
 use NonAppable\Webster\Contracts\HttpConnection;
 use NonAppable\Webster\Exceptions\DictionaryException;
 use NonAppable\Webster\References\ElementaryDictionary;
@@ -14,9 +15,11 @@ use NonAppable\Webster\References\IntermediateDictionary;
 
 class ApiSpec extends ObjectBehavior
 {
-	function let(HttpConnection $http)
+	function let(HttpConnection $http, WordsFactory $wordsFactory, Words $words)
 	{
-		$this->beConstructedWith($http, 'http://www.dictionaryapi.com/api/v1/references/');
+		$wordsFactory->create()->willReturn($words);
+
+		$this->beConstructedWith($http, 'http://www.dictionaryapi.com/api/v1/references/', $wordsFactory);
 	}
 
     function it_is_initializable()

@@ -21,27 +21,27 @@ class Word
 
 	/**
 	 * Get parent words
-	 * 
+	 *
 	 * @return Words
 	 */
 	public function parents()
 	{
-		
+
 	}
 
 	/**
 	 * Get child words
-	 * 
+	 *
 	 * @return Words
 	 */
 	public function children()
 	{
-		
+
 	}
 
 	/**
 	 * Get the rank
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function rank()
@@ -51,7 +51,7 @@ class Word
 
 	/**
 	 * Get the word
-	 * 
+	 *
 	 * @return string
 	 */
 	public function word()
@@ -61,7 +61,7 @@ class Word
 
 	/**
 	 * Convert the Word to a string
-	 * 
+	 *
 	 * @return string
 	 */
 	public function __toString()
